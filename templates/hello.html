@@ -1,7 +1,71 @@
-<!doctype html>
-<title>Hello from Flask</title>
-{% if name %}
-  <h1>Hello {{ name }}!</h1>
-{% else %}
-  <h1>Hello, World!</h1>
-{% endif %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge, chrome=1" />
+    <title>Sentinel Hub WMS services with Leaflet</title>
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+        }
+        
+        #devTestingDemo {
+            height: 100%;
+            width: 100%;
+        }
+    </style>
+    
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.2.0/leaflet.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.2.0/leaflet.js"></script>
+
+</head>
+
+<body>
+<div id="devTestingDemo"></div>
+<script>
+
+// OpenStreetMap
+let osm = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+});
+
+// Sentinel Hub WMS service
+// tiles generated using EPSG:3857 projection - Leaflet takes care of that
+let baseUrl = "https://services.sentinel-hub.com/ogc/wms/f2329b81-81a3-4680-b0a0-65875ba66b29";
+let sentinelHub = L.tileLayer.wms(baseUrl, {
+    tileSize: 512,
+    attribution: '&copy; <a href="http://www.sentinel-hub.com/" target="_blank">Sentinel Hub</a>',
+    	 	 	 	urlProcessingApi:"https://services.sentinel-hub.com/ogc/wms/aeafc74a-c894-440b-a85b-964c7b26e471", 
+ 	 	 	 	maxcc:20, 
+ 	 	 	 	minZoom:6, 
+ 	 	 	 	maxZoom:16, 
+ 	 	 	 	preset:"MOISTURE_INDEX", 
+ 	 	 	 	layers:"MOISTURE_INDEX", 
+ 	 	 	 	time:"2020-05-01/2020-11-06", 
+
+});
+
+let baseMaps = {
+    'OpenStreetMap': osm
+};
+let overlayMaps = {
+    'Sentinel Hub WMS': sentinelHub
+}
+
+let map = L.map('devTestingDemo', {
+    center: [45.82879925192134, 12.491455078125], // lat/lng in EPSG:4326
+    zoom: 7,
+    layers: [osm, sentinelHub]
+});
+
+L.control.layers(baseMaps, overlayMaps).addTo(map);
+
+        </script>
+</body>
+</html>
