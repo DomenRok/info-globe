@@ -6,6 +6,7 @@ services:
             - "5000:5000"
         volumes:
             - .:/code
+        init: true
         depends_on:
             - redis
     redis:
