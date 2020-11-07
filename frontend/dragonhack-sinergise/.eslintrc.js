@@ -18,6 +18,4 @@ module.exports = {
     "plugins": [
         "vue"
     ],
-    "rules": {
-    }
 };
