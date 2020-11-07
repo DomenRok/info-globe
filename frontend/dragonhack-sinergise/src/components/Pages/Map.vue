@@ -3,7 +3,6 @@
         <div class="overlay-container p-grid p-nogutter">
                 <PlacesSearch />
             <div>
-
             </div>
         </div>
         <div>

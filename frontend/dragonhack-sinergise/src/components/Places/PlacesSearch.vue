@@ -18,7 +18,6 @@
       <div class="p-col-2 button-container relative">
         <Button @click="toggleApiKey" label="Toggle API Key" />
       </div>
-      <pre>Ime kraja v storu: {{ suggestedPlace.name }}</pre>
     </div> 
   </div>
 </template>

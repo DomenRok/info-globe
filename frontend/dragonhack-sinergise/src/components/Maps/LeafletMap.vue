@@ -84,6 +84,7 @@ export default {
     watch: {
         latLng (newLatLng) {
             this.center = newLatLng
+            this.zoom = 14
         }
     }
 }
