@@ -1,9 +1,9 @@
 version: '3.7'
 services:
-    web:
+    backend:
         environment: 
             FLASK_ENV: development
-        build: .
+        build: backend/.
         ports:
             - "5000:5000"
         volumes:
@@ -13,3 +13,12 @@ services:
             - redis
     redis:
         image: redis
+    frontend:
+        build: frontend/dragonhack-sinergise/.
+        ports:
+            - "8080:8080"
+        volumes:
+            - .:/code
+        init: true
+        depends_on: 
+            - backend
