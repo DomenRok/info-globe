@@ -3,8 +3,10 @@ import VueRouter from 'vue-router';
 import App from './App.vue'
 import store from './store'
 import MapPage from './components/Pages/Map.vue'
+import VueGeolocation from 'vue-browser-geolocation';
 
 Vue.use(VueRouter);
+Vue.use(VueGeolocation);
 
 import 'leaflet/dist/leaflet.css';
 

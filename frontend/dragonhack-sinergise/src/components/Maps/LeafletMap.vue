@@ -33,6 +33,7 @@ import {
 } from "vuex";
 
 export default {
+    location: null,
     name: 'MyAwesomeMap',
     components: {
         LMap,
@@ -104,7 +105,31 @@ export default {
         latLng (newLatLng) {
             this.center = newLatLng
         }
+    },
+    created() {
+    //do we support geolocation
+    if(!("geolocation" in navigator)) {
+      this.errorStr = 'Geolocation is not available.';
+      return;
     }
+
+    this.gettingLocation = true;
+    // get position
+    navigator.geolocation.getCurrentPosition(pos => {
+    let latitude = pos.coords.latitude;
+    let longitude = pos.coords.longitude;
+    let center = [latitude, longitude]
+    this.center = center;
+      this.gettingLocation = false;
+      this.location = pos;
+    console.log(this.center);
+    console.log(pos);
+    }, err => {
+      this.gettingLocation = false;
+      this.errorStr = err.message;
+    })
+    } 
+
 }
 </script>
 
