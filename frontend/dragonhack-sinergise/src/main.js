@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router';
 import App from './App.vue'
-import PlacesSearch from "./components/Places/PlacesSearch";
 import store from './store'
 import MapPage from './components/Pages/Map.vue'
 
@@ -14,7 +13,7 @@ Vue.prototype.$primevue = {ripple: true};
 
 const router = new VueRouter({
   routes: [
-    { path: '/map', name: 'map', component: MapPage },
+    { path: '/', name: 'map', component: MapPage },
   ]
 })
 

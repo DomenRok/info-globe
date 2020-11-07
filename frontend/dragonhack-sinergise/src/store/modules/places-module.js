@@ -1,9 +1,11 @@
 const state = {
-    suggestedPlace: []
+    suggestedPlace: {},
+    latLng: [0 ,0]
 };
 
 const getters = {
-    suggestedPlace: state => state.suggestedPlace
+    suggestedPlace: state => { return state.suggestedPlace },
+    latLng: state => {return state.latLng }
 };
 
 const actions = {
@@ -14,7 +16,8 @@ const actions = {
 
 const mutations = {
     setSuggestedPlace: (state, place) => (
-        state.suggestedPlace = place
+        state.suggestedPlace = place,
+        state.latLng = [place.latlng.lat, place.latlng.lng]
     )
 };
 
