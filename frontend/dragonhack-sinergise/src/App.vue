@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <leaflet-map />
+    
   </div>
 </template>
 
