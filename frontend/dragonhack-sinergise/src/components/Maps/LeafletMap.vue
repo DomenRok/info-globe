@@ -10,12 +10,23 @@
                 :url="tileProvider.url"
                 :attribution="tileProvider.attribution"
                 layer-type="base"/>
+             <l-wms-tile-layer
+                v-for="layer in layers"
+                :key="layer.name"
+                :base-url="baseUrl"
+                :layers="layer.layers"
+                :visible="layer.visible"
+                :name="layer.name"
+                layer-type="base"
+
+                />
+
         </l-map>
     </div>
 </template>
 
 <script>
-import { LMap, LTileLayer, LControlLayers } from 'vue2-leaflet';
+import { LMap, LTileLayer, LWMSTileLayer, LControlLayers } from 'vue2-leaflet';
 import {
   mapGetters
 } from "vuex";
@@ -25,6 +36,7 @@ export default {
     components: {
         LMap,
         LTileLayer,
+        'l-wms-tile-layer': LWMSTileLayer,
         LControlLayers
     },
     computed: mapGetters(["suggestedPlace","latLng"]),
@@ -32,6 +44,7 @@ export default {
     data() {
         return {
             url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+            baseUrl: 'https://services.sentinel-hub.com/ogc/wms/e71da4bc-7306-43bf-b505-b60d2470912e',
             zoom: 14,
             center: [47.313220, -1.319482],
             tileProviders: 
@@ -50,6 +63,21 @@ export default {
                 attribution:
                     'Map data: &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)',
                 },
+            ],
+            layers:
+            [
+                {
+                    name:"Sentinel-Water",
+                    tileSize: 512,
+                    attribution: '&copy; <a href="http://www.sentinel-hub.com/" target="_blank">Sentinel Hub</a>',
+                    urlProcessingApi:'https://services.sentinel-hub.com/ogc/wms/aeafc74a-c894-440b-a85b-964c7b26e471', 
+                    maxcc:20, 
+                    minZoom:6, 
+                    maxZoom:16, 
+                    preset:'TEST', 
+                    layers:'TEST', 
+                    time:'2020-05-01/2020-11-07'
+                }
             ]
         }
     },
