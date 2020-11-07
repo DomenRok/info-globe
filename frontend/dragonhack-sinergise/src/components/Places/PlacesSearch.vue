@@ -1,22 +1,25 @@
 <template>
-  <div class="agolia-places p-grid" id="places-agola">
-    <div class="p-col-2 search-bar-container">
-      <app-places
-        :type="type"
-        :api-key="apiKey"
-        :app-id="appId"
-        :key="`${appId}-${apiKey}`"
-        @change="onChangeSuggestedPlace"
-    />
-    </div>
-    <div class="p-col-1 button-container">
-      <Button @click="toggleType" label="Toggle Type" />
+  <div class="agolia-places  p-shadow-23 z-index-500" id="places-agola">
+    <div class="p-grid controlls-container">
+      <div class="p-col-2 search-bar-container z-index-500 relative">
+        <app-places
+          :type="type"
+          :api-key="apiKey"
+          :app-id="appId"
+          :key="`${appId}-${apiKey}`"
+          @change="onChangeSuggestedPlace"
+      />
+      </div>
 
-    </div>
-    <div class="p-col-1 button-container">
-      <Button @click="toggleApiKey" label="Toggle API Key" />
-    </div>
-    <pre>Ime kraja v storu: {{ suggestedPlace.name }}</pre>
+    <div class="p-col-2 button-container relative">
+        <Button @click="toggleType" label="Toggle Type" />
+
+      </div>
+      <div class="p-col-2 button-container relative">
+        <Button @click="toggleApiKey" label="Toggle API Key" />
+      </div>
+      <pre>Ime kraja v storu: {{ suggestedPlace.name }}</pre>
+    </div> 
   </div>
 </template>
 
@@ -68,11 +71,25 @@ export default {
 
 <style scoped>
   .agolia-places {
-    height: 15vh;
+    position: absolute;
+    right: 170px;
+    top: 10px
   }
-  .search-bar-container, .button-container{
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  .z-index-500{
+    z-index: 500;
   }
+  .relative{
+    width: 100%;
+    text-align: right;
+    
+  }
+  .controlls-container {
+    display: block;
+    width: 265px;
+  }
+
+  .search-bar-container {
+    height: 50px;
+  }
+
 </style>

@@ -1,15 +1,13 @@
 <template>
-    <div>
-        <div class="search-container">
-            <PlacesSearch />
-        </div>
-        <div class="p-grid">
-            <div class="p-col-2">
+    <div class="map-container">
+        <div class="overlay-container p-grid p-nogutter">
+                <PlacesSearch />
+            <div>
 
             </div>
-            <div class="map-container p-col-10">
-                <leaflet-map />
-            </div>
+        </div>
+        <div>
+            <leaflet-map class="map-component" />
         </div>
     </div>
 </template>
@@ -28,10 +26,16 @@ components: {
 </script>
 
 <style>
-    .search-conatiner{
-        height: 20vh;
+    .overlay-conatiner{
+        z-index: 500;    
+        position: absolute;
+        }
+    .map-component {
+        z-index: 0;
     }
     .map-conainer {
-        height: 80vh;
+        height: 100vh;
+        z-index: 0;
+        position: relative;
     }
 </style>

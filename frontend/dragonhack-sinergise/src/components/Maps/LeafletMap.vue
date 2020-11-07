@@ -93,7 +93,7 @@ export default {
     .map-component {
         top: 0;
         bottom: 0;
-        height: 80vh;
+        height: 100vh;
     }
 
 </style>

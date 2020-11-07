@@ -59,5 +59,7 @@ export default {
 #places-agola {
   z-index: 999;
   position: absolute;
+  width: 250px;
+  text-align: left;
 }
 </style>
