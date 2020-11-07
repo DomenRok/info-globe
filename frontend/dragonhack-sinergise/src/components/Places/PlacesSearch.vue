@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import AppPlaces from './components/Places';
+import AppPlaces from './Places.vue';
 
 export default {
   components: { AppPlaces },
