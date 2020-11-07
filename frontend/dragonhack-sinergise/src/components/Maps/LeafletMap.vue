@@ -17,6 +17,7 @@
                 :layers="layer.layers"
                 :visible="layer.visible"
                 :name="layer.name"
+                :options="layer.sinergiseSpecifika"
                 layer-type="base"
 
                 />
@@ -70,13 +71,31 @@ export default {
                     name:"Sentinel-Water",
                     tileSize: 512,
                     attribution: '&copy; <a href="http://www.sentinel-hub.com/" target="_blank">Sentinel Hub</a>',
-                    urlProcessingApi:'https://services.sentinel-hub.com/ogc/wms/aeafc74a-c894-440b-a85b-964c7b26e471', 
+                    urlProcessingApi:'https://services.sentinel-hub.com/ogc/wms/aeafc74a-c894-440b-a85b-964c7b26e471',
+                    visible: false, 
                     maxcc:20, 
                     minZoom:6, 
                     maxZoom:16, 
                     preset:'TEST', 
-                    layers:'TEST', 
-                    time:'2020-05-01/2020-11-07'
+                    layers:'TEST',
+                    sinergiseSpecifika: {
+                        time:'2018-05-01/2020-11-07'
+                    }
+                },
+                {
+                    name:"Sentinel-WildFire",
+                    tileSize: 512,
+                    attribution: '&copy; <a href="http://www.sentinel-hub.com/" target="_blank">Sentinel Hub</a>',
+                    urlProcessingApi:'https://services.sentinel-hub.com/ogc/wms/aeafc74a-c894-440b-a85b-964c7b26e471',
+                    visible: false, 
+                    maxcc:100, 
+                    minZoom:6, 
+                    maxZoom:16, 
+                    preset:'WILDFIRE', 
+                    layers:'WILDFIRE', 
+                    sinergiseSpecifika: {
+                        time:'2018-09-01T00:00:00Z/2019-03-04T23:59:59Z'
+                    }
                 }
             ]
         }
