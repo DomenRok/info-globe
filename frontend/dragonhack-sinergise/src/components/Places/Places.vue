@@ -38,7 +38,6 @@ export default {
     });
 
     this.instance.on('change', e => {
-      console.log(e);
       this.$emit('change', e);
     });
   },

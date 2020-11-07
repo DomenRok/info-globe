@@ -8,6 +8,9 @@
 
 <script>
 import { LMap, LTileLayer } from 'vue2-leaflet';
+import {
+  mapGetters
+} from "vuex";
 
 export default {
     name: 'MyAwesomeMap',
@@ -15,13 +18,20 @@ export default {
         LMap,
         LTileLayer
     },
+    computed: mapGetters(["suggestedPlace","latLng"]),
+    
     data() {
         return {
             url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-            zoom: 8,
+            zoom: 14,
             center: [47.313220, -1.319482]
         }
-    } 
+    },
+    watch: {
+        latLng (newLatLng) {
+            this.center = newLatLng
+        }
+    }
 }
 </script>
 
