@@ -1,4 +1,4 @@
 sentinelhub
 flask
 redis
-requirements
+requests
