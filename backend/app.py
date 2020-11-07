@@ -3,6 +3,7 @@ from flask import Flask
 from redis import Redis
 from markupsafe import escape
 from flask import render_template, request, jsonify
+import requests
 
 app = Flask(__name__)
 redis = Redis(host='redis', port=6379)
@@ -26,6 +27,20 @@ def geocode():
 
 def reverse_geocode():
     pass
+
+@app.route('/api/city/<city_name>')
+def wikipedia(city_name):
+    uri = "https://en.wikipedia.org/w/api.php"
+    params = {
+        "action": "query",
+        "format": "json",
+        "list": "search",
+        "srsearch": escape(city_name),
+    }
+
+    request = requests.get(url=uri, params=params)
+    api_response = request.json()
+    return jsonify(api_response)
 
 
 if __name__ == "__main__":
