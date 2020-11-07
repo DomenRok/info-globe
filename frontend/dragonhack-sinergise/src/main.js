@@ -13,7 +13,7 @@ Vue.prototype.$primevue = {ripple: true};
 
 const router = new VueRouter({
   routes: [
-    { path: '/map', name: 'map', component: MapPage },
+    { path: '/', name: 'map', component: MapPage },
   ]
 })
 
