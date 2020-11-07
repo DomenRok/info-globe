@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="places-agola">
     <app-places
         :type="type"
         :api-key="apiKey"
@@ -12,12 +12,11 @@
       Toggle <code>apiKey</code> ({{ apiKey }} - {{ appId }})
     </button>
     <pre>{{ suggestion }}</pre>
-    <router-view />
   </div>
 </template>
 
 <script>
-import AppPlaces from './components/Places';
+import AppPlaces from './Places.vue';
 
 export default {
   components: { AppPlaces },

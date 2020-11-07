@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <leaflet-map />
-    
+    <router-view />
   </div>
 </template>
 

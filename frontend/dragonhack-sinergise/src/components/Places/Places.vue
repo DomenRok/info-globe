@@ -1,6 +1,6 @@
 <template>
   <!-- nek container za places.js -->
-  <div />
+  <div id="places-agola" />
 </template>
 
 <script>
@@ -56,5 +56,8 @@ export default {
 </script>
 
 <style scoped>
-/* stili */
+#places-agola {
+  z-index: 999;
+  position: absolute;
+}
 </style>
