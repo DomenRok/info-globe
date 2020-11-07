@@ -67,7 +67,7 @@ export default {
             layers:
             [
                 {
-                    name="Sentinel-Water",
+                    name:"Sentinel-Water",
                     tileSize: 512,
                     attribution: '&copy; <a href="http://www.sentinel-hub.com/" target="_blank">Sentinel Hub</a>',
                     urlProcessingApi:'https://services.sentinel-hub.com/ogc/wms/aeafc74a-c894-440b-a85b-964c7b26e471', 
