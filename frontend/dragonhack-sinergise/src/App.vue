@@ -1,29 +1,25 @@
 <template>
-  <div id="app">
-    <leaflet-map />
+  <div id="app" >
     <router-view />
   </div>
 </template>
 
 <script>
-
-import LeafletMap from './components/Maps/LeafletMap.vue'
+import 'primeflex/primeflex.css';
 
 export default {
-  name: 'App',
-  components: {
-    LeafletMap
-  }
+  name: 'App'
 }
 </script>
 
 <style>
 #app {
+  height: 100%;
+  position: relative;
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
 }
 </style>

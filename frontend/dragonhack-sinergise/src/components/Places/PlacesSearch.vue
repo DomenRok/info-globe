@@ -1,25 +1,33 @@
 <template>
-  <div id="places-agola">
-    <app-places
+  <div class="agolia-places p-grid" id="places-agola">
+    <div class="p-col-2 search-bar-container">
+      <app-places
         :type="type"
         :api-key="apiKey"
         :app-id="appId"
         :key="`${appId}-${apiKey}`"
         @change="suggestion = $event.suggestion"
     />
-    <button @click="toggleType">Toggle <code>type</code> ({{ type }})</button>
-    <button @click="toggleApiKey">
-      Toggle <code>apiKey</code> ({{ apiKey }} - {{ appId }})
-    </button>
-    <pre>{{ suggestion }}</pre>
+    </div>
+    <div class="p-col-1 button-container">
+      <Button @click="toggleType" label="Toggle Type" />
+
+    </div>
+    <div class="p-col-1 button-container">
+      <Button @click="toggleApiKey" label="Toggle API Key" />
+    </div>
   </div>
 </template>
 
 <script>
 import AppPlaces from './Places.vue';
+import Button from 'primevue/button';
 
 export default {
-  components: { AppPlaces },
+  components: { 
+    AppPlaces,
+    Button
+   },
   data() {
     return {
       suggestion: undefined,
@@ -48,3 +56,14 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+  .agolia-places {
+    height: 15vh;
+  }
+  .search-bar-container, .button-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+</style>
