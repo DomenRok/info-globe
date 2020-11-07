@@ -16,14 +16,14 @@
     <div class="content">
         <div v-if="activetab ==='1' && cityInfo" class="tabcontent">
             <table>
-              <tr><td class="legend">Area:</td><td class="data">640,679 km<sup>2</sup></td><td rowspan="5"><img class="map" src="https://drive.google.com/thumbnail?id=1edVL631_KOzd5zXzwrDNbn7bZDxqcRUQ"></td></tr>
-              <tr><td class="legend">Population:</td><td class="data">67 million</td></tr>
-              <tr><td class="legend">Capital:</td><td class="data">Paris</td></tr>
-              <tr><td class="legend">Language:</td><td class="data">French</td></tr>
+              <tr><td class="legend">Area:</td><td class="data">{{cityInfo.area.value}} km<sup>2</sup></td><td rowspan="5"><img class="map" src="https://drive.google.com/thumbnail?id=1edVL631_KOzd5zXzwrDNbn7bZDxqcRUQ"></td></tr>
+              <tr><td class="legend">Population:</td><td class="data">{{cityInfo.population.value}} million</td></tr>
+              <tr><td class="legend">Capital:</td><td class="data">{{cityInfo.name}}</td></tr>
+              <tr><td class="legend">Language:</td><td class="data">{{cityInfo.countryLabel.value}}</td></tr>
               <tr><td class="legend" valign="top">Flag:</td><td class="data"><img class="flag" src="https://upload.wikimedia.org/wikipedia/en/thumb/c/c3/Flag_of_France.svg/900px-Flag_of_France.svg.png" width="80"></td></tr>
             </table>
             <div class="summary">
-                {{cityInfo.extract}}
+                Test
             </div>
         </div>
         <div v-if="activetab ==='2'" class="tabcontent">
@@ -35,6 +35,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import SPARQLQueryDispatcher from './SPARQLQueryDispatcher'
 
 export default {
     name: 'WikiInfo',
@@ -56,20 +57,12 @@ export default {
         fetchData(name) {
             this.error = this.cityInfo = null
             this.loading = true
-            fetch(`https://en.wikipedia.org/w/api.php?action=query&prop=extracts&exintro&explaintext&format=json&redirects&origin=*&titles=${name}`)
-            .then(response => {
-                this.loading = false;
-                if (!response.ok) throw response;
-                return response.json();
-            })
-            .then(json => {
-                console.log(json);
-                this.cityInfo = Object.values(json.query.pages)[0];
-                console.log(json);
-            })
-            .catch(err => {
-                this.error = err.toString();
-            })
+            const queryDispatcher = new SPARQLQueryDispatcher();
+            queryDispatcher.getCityInfo(name)
+                .then(response => {
+                    this.loading = false;
+                    this.cityInfo = {...response.results.bindings[0], name};
+                });
         }
     },
     watch: {
