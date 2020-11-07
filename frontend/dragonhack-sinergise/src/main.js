@@ -4,6 +4,8 @@ import App from './App.vue'
 import PlacesPage from "./PlacesPage";
 Vue.use(VueRouter);
 
+import 'leaflet/dist/leaflet.css';
+
 Vue.config.productionTip = false
 
 const router = new VueRouter({
