@@ -5,30 +5,38 @@
         :api-key="apiKey"
         :app-id="appId"
         :key="`${appId}-${apiKey}`"
-        @change="suggestion = $event.suggestion"
+        @change="onChangeSuggestedPlace"
     />
     <button @click="toggleType">Toggle <code>type</code> ({{ type }})</button>
     <button @click="toggleApiKey">
       Toggle <code>apiKey</code> ({{ apiKey }} - {{ appId }})
     </button>
-    <pre>{{ suggestion }}</pre>
+    <pre>Ime kraja v storu: {{ suggestedPlace.name }}</pre>
   </div>
 </template>
 
 <script>
 import AppPlaces from './Places.vue';
+import {
+  mapGetters,
+  mapActions
+} from "vuex";
 
 export default {
   components: { AppPlaces },
+  computed: mapGetters(["suggestedPlace"]),
   data() {
     return {
-      suggestion: undefined,
       appId: undefined,
       apiKey: undefined,
       type: 'city',
     };
   },
   methods: {
+    ...mapActions(["addSuggestedPlace"]),
+    onChangeSuggestedPlace(suggest) {
+      this.addSuggestedPlace(suggest.suggestion);
+    },
     toggleApiKey() {
       if (this.apiKey) {
         this.apiKey = undefined;
