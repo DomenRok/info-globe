@@ -13,13 +13,14 @@ export default {
     name: 'MyAwesomeMap',
     components: {
         LMap,
-        LTileLayer,
+        LTileLayer
     },
     data() {
         return {
             url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
             zoom: 8,
             center: [47.313220, -1.319482],
+            value: "test"
         }
     } 
 }
@@ -27,12 +28,9 @@ export default {
 
 <style scoped>
     .map-component {
-        position: absolute;
         top: 0;
         bottom: 0;
         width: 100%;
     }
-    .map-container {
-        position: relative;
-    }
+
 </style>
