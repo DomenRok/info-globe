@@ -1,6 +1,6 @@
 <template>
     <div class="map-container">
-        <l-map class="map-component" style="height: 350px" :zoom="zoom" :center="center">
+        <l-map class="map-component" :zoom="zoom" :center="center">
             <l-tile-layer :url="url"></l-tile-layer>
         </l-map>
     </div>
@@ -19,8 +19,7 @@ export default {
         return {
             url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
             zoom: 8,
-            center: [47.313220, -1.319482],
-            value: "test"
+            center: [47.313220, -1.319482]
         }
     } 
 }
@@ -30,7 +29,7 @@ export default {
     .map-component {
         top: 0;
         bottom: 0;
-        width: 100%;
+        height: 80vh;
     }
 
 </style>
