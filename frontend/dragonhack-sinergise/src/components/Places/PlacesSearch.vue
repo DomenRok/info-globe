@@ -6,7 +6,7 @@
         :api-key="apiKey"
         :app-id="appId"
         :key="`${appId}-${apiKey}`"
-        @change="suggestion = $event.suggestion"
+        @change="onChangeSuggestedPlace"
     />
     </div>
     <div class="p-col-1 button-container">
@@ -16,11 +16,16 @@
     <div class="p-col-1 button-container">
       <Button @click="toggleApiKey" label="Toggle API Key" />
     </div>
+    <pre>Ime kraja v storu: {{ suggestedPlace.name }}</pre>
   </div>
 </template>
 
 <script>
 import AppPlaces from './Places.vue';
+import {
+  mapGetters,
+  mapActions
+} from "vuex";
 import Button from 'primevue/button';
 
 export default {
@@ -28,15 +33,19 @@ export default {
     AppPlaces,
     Button
    },
+  computed: mapGetters(["suggestedPlace"]),
   data() {
     return {
-      suggestion: undefined,
       appId: undefined,
       apiKey: undefined,
       type: 'city',
     };
   },
   methods: {
+    ...mapActions(["addSuggestedPlace"]),
+    onChangeSuggestedPlace(suggest) {
+      this.addSuggestedPlace(suggest.suggestion);
+    },
     toggleApiKey() {
       if (this.apiKey) {
         this.apiKey = undefined;
