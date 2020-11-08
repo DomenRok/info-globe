@@ -26,13 +26,13 @@
                 layer-type="base"
 
                 />
-
+                <l-polygon :lat-lngs="polygon.latlngs" :color="polygon.color"></l-polygon>
         </l-map>
     </div>
 </template>
 
 <script>
-import { LMap, LTileLayer, LWMSTileLayer, LControlLayers } from 'vue2-leaflet';
+import { LMap, LTileLayer, LWMSTileLayer, LControlLayers, LPolygon } from 'vue2-leaflet';
 import {
   mapGetters
 } from "vuex";
@@ -44,7 +44,8 @@ export default {
         LMap,
         LTileLayer,
         'l-wms-tile-layer': LWMSTileLayer,
-        LControlLayers
+        LControlLayers,
+        LPolygon
     },
     methods: {
         zoomUpdate(zoom) {
@@ -54,7 +55,7 @@ export default {
             this.currentCenter = center;
         },
     },
-    computed: mapGetters(["suggestedPlace","latLng","getDate"]),
+    computed: mapGetters(["suggestedPlace","latLng","getDate", "geoPolygon"]),
     
     data() {
         return {
@@ -114,13 +115,20 @@ export default {
                         time:'2018-09-01T00:00:00Z/2019-03-04T23:59:59Z'
                     }
                 }
-            ]
+            ],
+            polygon: {
+                latlngs: [],
+                color: 'green'
+            },
         }
     },
     watch: {
         latLng (newLatLng) {
             this.center = newLatLng
             this.zoom = 14
+        },
+        geoPolygon(newGeoPolygon) {
+            this.polygon.latlngs = newGeoPolygon
         },
         async getDate (newDate) {
             let startDate = new Date(newDate[0])
