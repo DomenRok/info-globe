@@ -2,7 +2,7 @@
   <div id="tabs" class="container">
       <div class="tabs">
         <a v-on:click="activetab='1'" v-bind:class="[ activetab === '1' ? 'active' : '' ]">Wiki info</a>
-        <a v-on:click="activetab='2'" v-bind:class="[ activetab === '2' ? 'active' : '' ]">Graphs</a>
+        <a v-on:click="activetab='2'" v-bind:class="[ activetab === '2' ? 'active' : '' ]">Hide</a>
     </div>
 
     <div v-if="loading" class="loading">
@@ -28,9 +28,6 @@
             <div v-if="cityInfo.geoshape" class="summary">
                 {{cityInfo.geoshape.value}}
             </div>
-        </div>
-        <div v-if="activetab ==='2'" class="tabcontent">
-            Not made yet
         </div>
     </div>
   </div>

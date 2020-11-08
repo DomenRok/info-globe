@@ -26,7 +26,7 @@
                 layer-type="base"
 
                 />
-                <l-polygon :lat-lngs="polygon.latlngs" :color="polygon.color"></l-polygon>
+                 <l-polygon :lat-lngs="polygon.latlngs" :color="polygon.color"></l-polygon>
         </l-map>
     </div>
 </template>
@@ -128,7 +128,11 @@ export default {
             this.zoom = 14
         },
         geoPolygon(newGeoPolygon) {
-            this.polygon.latlngs = newGeoPolygon
+            let reversedGeo = []
+            newGeoPolygon[0].forEach(element => {
+                reversedGeo.push([element[1],element[0]])
+            });
+            this.polygon.latlngs = reversedGeo
         },
         async getDate (newDate) {
             let startDate = new Date(newDate[0])
