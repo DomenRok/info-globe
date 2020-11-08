@@ -1,9 +1,11 @@
 <template>
     <div class="map-container">
         <div class="overlay-container p-grid p-nogutter">
-                <PlacesSearch />
-            <div>
+            <div class="p-col-6">
                 <WikiInfo/>
+            </div>
+            <div class="p-col-6">
+                <PlacesSearch />
             </div>
         </div>
         <div>

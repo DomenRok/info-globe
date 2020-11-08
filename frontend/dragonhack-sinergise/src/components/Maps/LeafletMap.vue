@@ -86,7 +86,7 @@ export default {
             layers:
             [
                 {
-                    name:"Sentinel-Water",
+                    name:"Water",
                     tileSize: 512,
                     attribution: '&copy; <a href="http://www.sentinel-hub.com/" target="_blank">Sentinel Hub</a>',
                     urlProcessingApi:'https://services.sentinel-hub.com/ogc/wms/aeafc74a-c894-440b-a85b-964c7b26e471',
@@ -97,11 +97,12 @@ export default {
                     preset:'TEST', 
                     layers:'TEST',
                     sinergiseSpecifika: {
-                        time:'2018-05-01/2020-11-07'
+                        upsampling:'bicubic',
+                        downsampling:'bicubic'
                     }
                 },
                 {
-                    name:"Sentinel-WildFire",
+                    name:"WildFire",
                     tileSize: 512,
                     attribution: '&copy; <a href="http://www.sentinel-hub.com/" target="_blank">Sentinel Hub</a>',
                     urlProcessingApi:'https://services.sentinel-hub.com/ogc/wms/aeafc74a-c894-440b-a85b-964c7b26e471',
@@ -113,6 +114,38 @@ export default {
                     layers:'WILDFIRE', 
                     sinergiseSpecifika: {
                         time:'2018-09-01T00:00:00Z/2019-03-04T23:59:59Z'
+                    }
+                },
+                {
+                    name:"UrbanInfraRed",
+                    tileSize: 512,
+                    attribution: '&copy; <a href="http://www.sentinel-hub.com/" target="_blank">Sentinel Hub</a>',
+                    urlProcessingApi:'https://services.sentinel-hub.com/ogc/wms/aeafc74a-c894-440b-a85b-964c7b26e471',
+                    visible: false, 
+                    maxcc:100, 
+                    minZoom:6, 
+                    maxZoom:16, 
+                    preset:'URBAN-INFRARED', 
+                    layers:'URBAN-INFRARED', 
+                    sinergiseSpecifika: {
+                        time:'2018-09-01T00:00:00Z/2019-03-04T23:59:59Z'
+                    }
+                },
+                {
+                    name:"GreenCity",
+                    tileSize: 512,
+                    attribution: '&copy; <a href="http://www.sentinel-hub.com/" target="_blank">Sentinel Hub</a>',
+                    urlProcessingApi:'https://services.sentinel-hub.com/ogc/wms/aeafc74a-c894-440b-a85b-964c7b26e471',
+                    visible: false, 
+                    maxcc:100, 
+                    minZoom:6, 
+                    maxZoom:16, 
+                    preset:'GREEN-CITY', 
+                    layers:'GREEN-CITY', 
+                    sinergiseSpecifika: {
+                        upsampling:'bicubic',
+                        downsampling:'bicubic'
+
                     }
                 }
             ],
@@ -174,9 +207,26 @@ export default {
                         time:concatDate
                     }
                 }
+
+                let urbanLayer = {
+                    name:"UrbanInfraRed",
+                    tileSize: 512,
+                    attribution: '&copy; <a href="http://www.sentinel-hub.com/" target="_blank">Sentinel Hub</a>',
+                    urlProcessingApi:'https://services.sentinel-hub.com/ogc/wms/aeafc74a-c894-440b-a85b-964c7b26e471',
+                    visible: false, 
+                    maxcc:100, 
+                    minZoom:6, 
+                    maxZoom:16, 
+                    preset:'URBAN-INFRARED', 
+                    layers:'URBAN-INFRARED', 
+                    sinergiseSpecifika: {
+                        time:concatDate
+                    }
+                }
                 this.center = this.currentCenter;
                 this.zoom = this.currentZoom;
-                await this.$set(this.layers, 1, fireLayer);
+                this.$set(this.layers, 1, fireLayer);
+                await this.$set(this.layers, 2, urbanLayer);
                 this.rerender = true;
             }
         }
