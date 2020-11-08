@@ -4,7 +4,7 @@ export default class SPARQLQueryDispatcher {
     }
     
     getCountryInfo(name) {
-        const sparqlQuery = `SELECT ?population ?countryLabel ?geoshape ?area ?capitalLabel ?flag ?gdp WHERE {
+        const sparqlQuery = `SELECT ?population ?countryLabel ?geoshape ?locator ?area ?capitalLabel ?flag ?gdp WHERE {
             SERVICE wikibase:mwapi {
                 bd:serviceParam mwapi:search "${name}" .    
                 bd:serviceParam mwapi:language "en" .    
@@ -20,6 +20,7 @@ export default class SPARQLQueryDispatcher {
                   wdt:P2046 ?area;
                   wdt:P36 ?capital;
                   wdt:P41 ?flag;
+                  wdt:P242 ?locator;
                   wdt:P4010 ?gdp
           }`;
         
@@ -27,7 +28,7 @@ export default class SPARQLQueryDispatcher {
     }
 
     getCityInfo(name) {
-        const sparqlQuery = `SELECT ?population ?area ?countryLabel ?flag ?geoshape WHERE {
+        const sparqlQuery = `SELECT ?population ?area ?locator ?countryLabel ?flag ?geoshape WHERE {
             SERVICE wikibase:mwapi {
                 bd:serviceParam mwapi:search "${name}" .    
                 bd:serviceParam mwapi:language "en" .    
@@ -40,6 +41,7 @@ export default class SPARQLQueryDispatcher {
             ?item wdt:P1082 ?population;
                   wdt:P17 ?country;
                   wdt:P41 ?flag;
+                  wdt:P242 ?locator;
                   wdt:P2046 ?area
             OPTIONAL { ?item wdt:P3896 ?geoshape   }
           }`;
