@@ -16,12 +16,14 @@ export default class SPARQLQueryDispatcher {
             SERVICE wikibase:label { bd:serviceParam wikibase:language "en" }
             ?item wdt:P1082 ?population;
                   wdt:P17 ?country;
-                  wdt:P3896 ?geoshape;
                   wdt:P2046 ?area;
                   wdt:P36 ?capital;
                   wdt:P41 ?flag;
-                  wdt:P242 ?locator;
                   wdt:P4010 ?gdp
+            OPTIONAL {
+                ?item wdt:P242 ?locator;
+            }
+            OPTIONAL { ?item wdt:P3896 ?geoshape   }
           }`;
         
         return this.query( sparqlQuery );
@@ -41,9 +43,11 @@ export default class SPARQLQueryDispatcher {
             ?item wdt:P1082 ?population;
                   wdt:P17 ?country;
                   wdt:P41 ?flag;
-                  wdt:P242 ?locator;
                   wdt:P2046 ?area
             OPTIONAL { ?item wdt:P3896 ?geoshape   }
+            OPTIONAL {
+                ?item wdt:P242 ?locator;
+            }
           }`;
         
         return this.query( sparqlQuery );
