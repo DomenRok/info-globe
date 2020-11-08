@@ -1,6 +1,11 @@
 <template>
     <div class="map-container">
-        <l-map class="map-component" :zoom="zoom" :center="center">
+        <l-map class="map-component" 
+        :zoom="zoom" 
+        :center="center" 
+        v-if="rerender" 
+        @update:center="centerUpdate"
+        @update:zoom="zoomUpdate">
             <l-control-layers position="topright"></l-control-layers>
             <l-tile-layer
                 v-for="tileProvider in tileProviders"
@@ -17,6 +22,7 @@
                 :layers="layer.layers"
                 :visible="layer.visible"
                 :name="layer.name"
+                :options="layer.sinergiseSpecifika"
                 layer-type="base"
 
                 />
@@ -32,6 +38,7 @@ import {
 } from "vuex";
 
 export default {
+    location: null,
     name: 'MyAwesomeMap',
     components: {
         LMap,
@@ -39,14 +46,25 @@ export default {
         'l-wms-tile-layer': LWMSTileLayer,
         LControlLayers
     },
-    computed: mapGetters(["suggestedPlace","latLng"]),
+    methods: {
+        zoomUpdate(zoom) {
+            this.currentZoom = zoom;
+        },
+        centerUpdate(center) {
+            this.currentCenter = center;
+        },
+    },
+    computed: mapGetters(["suggestedPlace","latLng","getDate"]),
     
     data() {
         return {
             url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
             baseUrl: 'https://services.sentinel-hub.com/ogc/wms/e71da4bc-7306-43bf-b505-b60d2470912e',
             zoom: 14,
+            rerender:true,
             center: [47.313220, -1.319482],
+            currentCenter: [],
+            currentZoom: 0,
             tileProviders: 
             [
                 {
@@ -70,13 +88,31 @@ export default {
                     name:"Sentinel-Water",
                     tileSize: 512,
                     attribution: '&copy; <a href="http://www.sentinel-hub.com/" target="_blank">Sentinel Hub</a>',
-                    urlProcessingApi:'https://services.sentinel-hub.com/ogc/wms/aeafc74a-c894-440b-a85b-964c7b26e471', 
+                    urlProcessingApi:'https://services.sentinel-hub.com/ogc/wms/aeafc74a-c894-440b-a85b-964c7b26e471',
+                    visible: false, 
                     maxcc:20, 
                     minZoom:6, 
                     maxZoom:16, 
                     preset:'TEST', 
-                    layers:'TEST', 
-                    time:'2020-05-01/2020-11-07'
+                    layers:'TEST',
+                    sinergiseSpecifika: {
+                        time:'2018-05-01/2020-11-07'
+                    }
+                },
+                {
+                    name:"Sentinel-WildFire",
+                    tileSize: 512,
+                    attribution: '&copy; <a href="http://www.sentinel-hub.com/" target="_blank">Sentinel Hub</a>',
+                    urlProcessingApi:'https://services.sentinel-hub.com/ogc/wms/aeafc74a-c894-440b-a85b-964c7b26e471',
+                    visible: false, 
+                    maxcc:100, 
+                    minZoom:6, 
+                    maxZoom:16, 
+                    preset:'WILDFIRE', 
+                    layers:'WILDFIRE', 
+                    sinergiseSpecifika: {
+                        time:'2018-09-01T00:00:00Z/2019-03-04T23:59:59Z'
+                    }
                 }
             ]
         }
@@ -84,8 +120,79 @@ export default {
     watch: {
         latLng (newLatLng) {
             this.center = newLatLng
+            this.zoom = 14
+        },
+        async getDate (newDate) {
+            let startDate = new Date(newDate[0])
+            let endDate = new Date(newDate[1])
+            if(endDate-startDate >= 0){
+                this.rerender = await false;
+                let concatDate = '' + newDate[0] + '/' + newDate[1]
+
+                let waterLayer = {
+                    name:"Sentinel-Water",
+                    tileSize: 512,
+                    attribution: '&copy; <a href="http://www.sentinel-hub.com/" target="_blank">Sentinel Hub</a>',
+                    urlProcessingApi:'https://services.sentinel-hub.com/ogc/wms/aeafc74a-c894-440b-a85b-964c7b26e471',
+                    visible: false, 
+                    maxcc:20, 
+                    minZoom:6, 
+                    maxZoom:16, 
+                    preset:'TEST', 
+                    layers:'TEST',
+                    sinergiseSpecifika: {
+                        time: concatDate
+                    }
+                }
+
+                this.$set(this.layers, 0, waterLayer);
+
+                let fireLayer = {
+                    name:"Sentinel-WildFire",
+                    tileSize: 512,
+                    attribution: '&copy; <a href="http://www.sentinel-hub.com/" target="_blank">Sentinel Hub</a>',
+                    urlProcessingApi:'https://services.sentinel-hub.com/ogc/wms/aeafc74a-c894-440b-a85b-964c7b26e471',
+                    visible: false, 
+                    maxcc:100, 
+                    minZoom:6, 
+                    maxZoom:16, 
+                    preset:'WILDFIRE', 
+                    layers:'WILDFIRE', 
+                    sinergiseSpecifika: {
+                        time:concatDate
+                    }
+                }
+                this.center = this.currentCenter;
+                this.zoom = this.currentZoom;
+                await this.$set(this.layers, 1, fireLayer);
+                this.rerender = true;
+            }
         }
+    },
+    created() {
+    //do we support geolocation
+    if(!("geolocation" in navigator)) {
+      this.errorStr = 'Geolocation is not available.';
+      return;
     }
+
+    this.gettingLocation = true;
+    // get position
+    navigator.geolocation.getCurrentPosition(pos => {
+    let latitude = pos.coords.latitude;
+    let longitude = pos.coords.longitude;
+    let center = [latitude, longitude]
+    this.center = center;
+      this.gettingLocation = false;
+      this.location = pos;
+    console.log(this.center);
+    console.log(pos);
+    }, err => {
+      this.gettingLocation = false;
+      this.errorStr = err.message;
+    })
+    } 
+
 }
 </script>
 
