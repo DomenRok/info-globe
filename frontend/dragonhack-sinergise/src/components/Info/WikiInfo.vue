@@ -16,7 +16,7 @@
     <div class="content">
         <div v-if="activetab ==='1' && cityInfo" class="tabcontent">
             <table>
-              <tr v-if="cityInfo.area && cityInfo.locator">
+              <tr v-if="cityInfo.area">
                   <td class="legend">Area:</td><td class="data">{{cityInfo.area.value}} km<sup>2</sup></td>
                   <td v-if="cityInfo.locator" rowspan="5"><img class="map" :src="cityInfo.locator.value"></td>
               </tr>
