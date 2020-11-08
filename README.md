@@ -1,4 +1,5 @@
 # InfoGlobe
+![](image.png)
 Web app, meant for exploring the world, and learning something new along the way.
 
 Features:
@@ -6,7 +7,8 @@ Features:
 * Geocoding - enter a city/country, recieve relevant information, cool visualizations 
 * Pick a date interval and recieve relevant satelite imagery from that time span
 
- ![Example map](https://i.imgur.com/uoeXBvU.png)
+
+ 
 
 # Quickstart
 `docker-compose up --build`
