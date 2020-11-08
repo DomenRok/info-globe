@@ -14,18 +14,18 @@
     </div>
 
     <div class="content">
-        <div v-if="activetab ==='1' && cityInfo.name" class="tabcontent">
+        <div v-if="activetab ==='1' && cityInfo" class="tabcontent">
             <table>
-              <tr><td class="legend">Area:</td><td class="data">{{cityInfo.area.value}} km<sup>2</sup></td><td rowspan="5"><img class="map" src="https://drive.google.com/thumbnail?id=1edVL631_KOzd5zXzwrDNbn7bZDxqcRUQ"></td></tr>
-              <tr><td class="legend">Population:</td><td class="data">{{cityInfo.population.value}} million</td></tr>
-              <tr><td class="legend">Capital:</td><td class="data">{{cityInfo.name}}</td></tr>
-              <tr><td class="legend">Language:</td><td class="data">{{cityInfo.countryLabel.value}}</td></tr>
-              <tr>
+              <tr v-if="cityInfo.area"><td class="legend">Area:</td><td class="data">{{cityInfo.area.value}} km<sup>2</sup></td><td rowspan="5"><img class="map" src="https://drive.google.com/thumbnail?id=1edVL631_KOzd5zXzwrDNbn7bZDxqcRUQ"></td></tr>
+              <tr v-if="cityInfo.population"><td class="legend">Population:</td><td class="data">{{cityInfo.population.value}} million</td></tr>
+              <tr v-if="cityInfo.name"><td class="legend">Capital:</td><td class="data">{{cityInfo.name}}</td></tr>
+              <tr v-if="cityInfo.countryLabel"><td class="legend">Language:</td><td class="data">{{cityInfo.countryLabel.value}}</td></tr>
+              <tr v-if="cityInfo.flag">
                   <td class="legend" valign="top">Flag:</td><td class="data">
                   <img class="flag" :src="cityInfo.flag.value" width="80"></td>
             </tr>
             </table>
-            <div class="summary">
+            <div v-if="cityInfo.geoshape" class="summary">
                 {{cityInfo.geoshape.value}}
             </div>
         </div>
