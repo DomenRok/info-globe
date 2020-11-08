@@ -2,7 +2,7 @@
   <div id="tabs" class="container">
       <div class="tabs">
         <a v-on:click="activetab='1'" v-bind:class="[ activetab === '1' ? 'active' : '' ]">Wiki info</a>
-        <a v-on:click="activetab='2'" v-bind:class="[ activetab === '2' ? 'active' : '' ]">Graphs</a>
+        <a v-on:click="activetab='2'" v-bind:class="[ activetab === '2' ? 'active' : '' ]">Hide</a>
     </div>
 
     <div v-if="loading" class="loading">
@@ -16,25 +16,25 @@
     <div class="content">
         <div v-if="activetab ==='1' && cityInfo" class="tabcontent">
             <table>
-              <tr><td class="legend">Area:</td><td class="data">{{cityInfo.area.value}} km<sup>2</sup></td><td rowspan="5"><img class="map" src="https://drive.google.com/thumbnail?id=1edVL631_KOzd5zXzwrDNbn7bZDxqcRUQ"></td></tr>
-              <tr><td class="legend">Population:</td><td class="data">{{cityInfo.population.value}} million</td></tr>
-              <tr><td class="legend">Capital:</td><td class="data">{{cityInfo.name}}</td></tr>
-              <tr><td class="legend">Language:</td><td class="data">{{cityInfo.countryLabel.value}}</td></tr>
-              <tr><td class="legend" valign="top">Flag:</td><td class="data"><img class="flag" src="https://upload.wikimedia.org/wikipedia/en/thumb/c/c3/Flag_of_France.svg/900px-Flag_of_France.svg.png" width="80"></td></tr>
+              <tr v-if="cityInfo.area"><td class="legend">Area:</td><td class="data">{{cityInfo.area.value}} km<sup>2</sup></td><td rowspan="5"><img class="map" src="https://drive.google.com/thumbnail?id=1edVL631_KOzd5zXzwrDNbn7bZDxqcRUQ"></td></tr>
+              <tr v-if="cityInfo.population"><td class="legend">Population:</td><td class="data">{{cityInfo.population.value}} million</td></tr>
+              <tr v-if="cityInfo.name"><td class="legend">Capital:</td><td class="data">{{cityInfo.name}}</td></tr>
+              <tr v-if="cityInfo.countryLabel"><td class="legend">Language:</td><td class="data">{{cityInfo.countryLabel.value}}</td></tr>
+              <tr v-if="cityInfo.flag">
+                  <td class="legend" valign="top">Flag:</td><td class="data">
+                  <img class="flag" :src="cityInfo.flag.value" width="80"></td>
+            </tr>
             </table>
-            <div class="summary">
-                Test
+            <div v-if="cityInfo.geoshape" class="summary">
+                {{cityInfo.geoshape.value}}
             </div>
-        </div>
-        <div v-if="activetab ==='2'" class="tabcontent">
-            Not made yet
         </div>
     </div>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import SPARQLQueryDispatcher from './SPARQLQueryDispatcher'
 
 export default {
@@ -51,9 +51,10 @@ export default {
     created () {
     // fetch the data when the view is created and the data is
     // already being observed
-    this.fetchData(this.suggestedPlace.name);
+    this.suggestedPlace && this.fetchData(this.suggestedPlace.name);
   },
     methods: {
+        ...mapActions(["addGeoPolygon"]),
         fetchData(name) {
             this.error = this.cityInfo = null
             this.loading = true
@@ -61,13 +62,20 @@ export default {
             queryDispatcher.getCityInfo(name)
                 .then(response => {
                     this.loading = false;
-                    this.cityInfo = {...response.results.bindings[0], name};
+                    const firstResult = response.results.bindings[0];
+                    this.cityInfo = {...firstResult, name};
                 });
+            name && fetch(`https://nominatim.openstreetmap.org/search.php?q=${name}&polygon_geojson=1&format=json`)
+                        .then(geoObj =>  geoObj.json())
+                        .then(json => {
+                            console.log("vsi geojson podatki", json);
+                            this.addGeoPolygon(json[0].geojson.coordinates);
+                        });
         }
     },
     watch: {
         suggestedPlace(place) {
-            this.fetchData(place.name);
+            place.name && this.fetchData(place.name);
         }
     }
 }
