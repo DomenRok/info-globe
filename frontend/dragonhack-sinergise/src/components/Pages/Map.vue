@@ -3,6 +3,7 @@
         <div class="overlay-container p-grid p-nogutter">
                 <PlacesSearch />
             <div>
+                <WikiInfo/>
             </div>
         </div>
         <div>
@@ -14,12 +15,14 @@
 <script>
 import LeafletMap from '../Maps/LeafletMap.vue'
 import PlacesSearch from '../Places/PlacesSearch';
+import WikiInfo from '../Info/WikiInfo'
 
 export default {
 name: "MapPage",
 components: {
     LeafletMap,
-    PlacesSearch
+    PlacesSearch,
+    WikiInfo
   }
 }
 </script>
