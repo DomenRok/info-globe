@@ -1,6 +1,11 @@
 <template>
     <div class="map-container">
-        <l-map class="map-component" :zoom="zoom" :center="center">
+        <l-map class="map-component" 
+        :zoom="zoom" 
+        :center="center" 
+        v-if="rerender" 
+        @update:center="centerUpdate"
+        @update:zoom="zoomUpdate">
             <l-control-layers position="topright"></l-control-layers>
             <l-tile-layer
                 v-for="tileProvider in tileProviders"
@@ -41,14 +46,25 @@ export default {
         'l-wms-tile-layer': LWMSTileLayer,
         LControlLayers
     },
-    computed: mapGetters(["suggestedPlace","latLng"]),
+    methods: {
+        zoomUpdate(zoom) {
+            this.currentZoom = zoom;
+        },
+        centerUpdate(center) {
+            this.currentCenter = center;
+        },
+    },
+    computed: mapGetters(["suggestedPlace","latLng","getDate"]),
     
     data() {
         return {
             url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
             baseUrl: 'https://services.sentinel-hub.com/ogc/wms/e71da4bc-7306-43bf-b505-b60d2470912e',
             zoom: 14,
+            rerender:true,
             center: [47.313220, -1.319482],
+            currentCenter: [],
+            currentZoom: 0,
             tileProviders: 
             [
                 {
@@ -104,6 +120,53 @@ export default {
     watch: {
         latLng (newLatLng) {
             this.center = newLatLng
+            this.zoom = 14
+        },
+        async getDate (newDate) {
+            let startDate = new Date(newDate[0])
+            let endDate = new Date(newDate[1])
+            if(endDate-startDate > 0){
+                this.rerender = await false;
+                let concatDate = '' + newDate[0] + '/' + newDate[1]
+
+                let waterLayer = {
+                    name:"Sentinel-Water",
+                    tileSize: 512,
+                    attribution: '&copy; <a href="http://www.sentinel-hub.com/" target="_blank">Sentinel Hub</a>',
+                    urlProcessingApi:'https://services.sentinel-hub.com/ogc/wms/aeafc74a-c894-440b-a85b-964c7b26e471',
+                    visible: false, 
+                    maxcc:20, 
+                    minZoom:6, 
+                    maxZoom:16, 
+                    preset:'TEST', 
+                    layers:'TEST',
+                    sinergiseSpecifika: {
+                        time: concatDate
+                    }
+                }
+
+                this.$set(this.layers, 0, waterLayer);
+
+                let fireLayer = {
+                    name:"Sentinel-WildFire",
+                    tileSize: 512,
+                    attribution: '&copy; <a href="http://www.sentinel-hub.com/" target="_blank">Sentinel Hub</a>',
+                    urlProcessingApi:'https://services.sentinel-hub.com/ogc/wms/aeafc74a-c894-440b-a85b-964c7b26e471',
+                    visible: false, 
+                    maxcc:100, 
+                    minZoom:6, 
+                    maxZoom:16, 
+                    preset:'WILDFIRE', 
+                    layers:'WILDFIRE', 
+                    sinergiseSpecifika: {
+                        time:concatDate
+                    }
+                }
+                this.center = this.currentCenter;
+                this.zoom = this.currentZoom;
+                await this.$set(this.layers, 1, fireLayer);
+                this.rerender = true;
+            }
         }
     },
     created() {
