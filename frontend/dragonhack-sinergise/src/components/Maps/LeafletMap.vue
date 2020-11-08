@@ -125,7 +125,7 @@ export default {
         async getDate (newDate) {
             let startDate = new Date(newDate[0])
             let endDate = new Date(newDate[1])
-            if(endDate-startDate > 0){
+            if(endDate-startDate >= 0){
                 this.rerender = await false;
                 let concatDate = '' + newDate[0] + '/' + newDate[1]
 
